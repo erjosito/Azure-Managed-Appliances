@@ -1,0 +1,54 @@
+{
+   "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json",
+   "handler": "Microsoft.Compute.MultiVm",
+   "version": "0.1.2-preview",
+   "parameters": {
+      "basics": [
+            {
+                "name": "storageAccountPrefix",
+                "type": "Microsoft.Compute.UserNameTextBox",
+                "label": "Storage Account Prefix",
+                "toolTip": "String prefix (lower case) for the storage account. A unique suffix will be appended."
+            }
+       ],
+      "steps": [
+       {
+                "name": "repConfig",
+                "label": "Replication settings",
+                "subLabel": 
+                {
+                    "preValidation": "Configure the replication settings",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "Infrastructure settings",
+                "elements": [
+                    {
+                    "name": "storageSku",
+                    "type": "Microsoft.Common.DropDown",
+                    "label": "Some drop down",
+                    "defaultValue": "Local Replication",
+                    "toolTip": "",
+                    "constraints": {
+                        "allowedValues": [
+                        {
+                            "label": "Local Replication",
+                            "value": "Standard_LRS"
+                        },
+                        {
+                            "label": "Geo Replication",
+                            "value": "Standard_GRS"
+                        }
+                        ]
+                    },
+                    "visible": true
+                    }
+                ]
+       }
+       ],
+      "outputs": {
+            "location": "[location()]",
+            "storageAccountPrefix": "[basics('storageAccountPrefix')]",
+            "sku": "[steps('repConfig').storageSku]"
+      }
+   }
+}
