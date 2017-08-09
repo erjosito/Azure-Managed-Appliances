@@ -48,7 +48,7 @@
       "outputs": {
             "location": "[location()]",
             "vmName": "[basics('vmName')]",
-            "vmType": "[vmDetails('vmType)]"
+            "vmType": "[steps('vmDetails').vmType]"
       }
    }
 }
