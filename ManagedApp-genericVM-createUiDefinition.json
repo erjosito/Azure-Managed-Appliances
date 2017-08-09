@@ -1,0 +1,54 @@
+{
+   "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json",
+   "handler": "Microsoft.Compute.MultiVm",
+   "version": "0.1.2-preview",
+   "parameters": {
+      "basics": [
+            {
+                "name": "vmName",
+                "type": "Microsoft.Compute.UserNameTextBox",
+                "label": "Virtual Machine Name",
+                "toolTip": "The name you would like to give you your new VM."
+            }
+       ],
+      "steps": [
+       {
+                "name": "vmDetails",
+                "label": "VM details",
+                "subLabel": 
+                {
+                    "preValidation": "Configure the details of your VM",
+                    "postValidation": "Done"
+                },
+                "bladeTitle": "VM settings",
+                "elements": [
+                    {
+                    "name": "vmType",
+                    "type": "Microsoft.Common.DropDown",
+                    "label": "VM OS",
+                    "defaultValue": "Ubuntu",
+                    "toolTip": "Choose the OS for your Virtual Machine",
+                    "constraints": {
+                        "allowedValues": [
+                        {
+                            "label": "Ubuntu",
+                            "value": "ubuntu"
+                        },
+                        {
+                            "label": "Windows",
+                            "value": "windows"
+                        }
+                        ]
+                    },
+                    "visible": true
+                    }
+                ]
+       }
+       ],
+      "outputs": {
+            "location": "[location()]",
+            "vmName": "[basics('vmName')]",
+            "vmType": "[vmDetails('vmType)]"
+      }
+   }
+}

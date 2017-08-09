@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "applianceDefinitionId": {
+            "type": "string"
+        },
+        "managedByResourceGroup": {
+            "type": "string"
+        },
+        "applianceName": {
+            "type": "string"
+        },
+        "vmName": {
+            "defaultValue": "myVm",
+            "type": "string",
+			"metadata": { "description": "Name to be assigned to the new VM" }
+        },
+         "vnetName": {
+            "defaultValue": "myVnet",
+            "type": "string",
+			"metadata": { "description": "vnet where new VM should be placed. This vnet must already exist." }
+        },
+         "subnetName": {
+            "defaultValue": "default",
+            "type": "string",
+			"metadata": { "description": "Subnet where the new VM should be placed. This subnet must already exist." }
+        },
+         "vmType": {
+            "defaultValue": "ubuntu",
+            "type": "string",
+			"allowedValues": [ "ubuntu", "windows" ],
+			"metadata": { "description": "Type of VM. At this point only ubuntu and windows supported" }
+        },
+         "vmSize": {
+            "defaultValue": "Standard_A0",
+            "type": "string",
+			"allowedValues": [ "Standard_A0", "Standard_A1_v2", "Standard_D2_v3", "Standard_D2s_v3", "Standard_D1_v2", "Standard_DS1_v2" ],
+			"metadata": { "description": "Size of the new VM. Only a limited subset of sizes are supported" }
+        },
+		"adminUsername": {
+            "type": "string",
+			"metadata": { "description": "Username to login to the VM, either over SSH for Linux VMs, or over RDP for Windows VMs" }
+        }
+    },
+    "variables": {            
+    },
+    "resources": [{
+        "type": "Microsoft.Solutions/appliances",
+        "name": "[parameters('applianceName')]",
+        "apiVersion": "2016-09-01-preview",
+        "location": "[resourceGroup().location]",
+        "kind": "ServiceCatalog",
+        "properties": {
+            "managedResourceGroupId": "[parameters('managedByResourceGroup')]",
+            "applianceDefinitionId": "[parameters('applianceDefinitionId')]",
+			"parameters": {
+					"vmName": { "value": "[parameters('vmName')]"},
+					"vmType": { "value": "[parameters('vmType')]"},
+					"vmSize": { "value": "Standard_A0"},
+					"vnetName": { "value": "myVnet"},
+					"subnetName": { "value": "default"},
+					"adminUsername": { "value": "jose"},
+					"adminPassword": {
+						"reference": {
+							"keyVault": {
+								"id": "/subscriptions/3e78e84b-6750-44b9-9d57-d9bba935237a/resourceGroups/PermanentLab/providers/Microsoft.KeyVault/vaults/erjosito"
+							},
+							"secretName": "defaultPwd"
+						}
+					}
+			}
+        }
+    }]
+}
