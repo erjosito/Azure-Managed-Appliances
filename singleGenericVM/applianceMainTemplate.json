@@ -31,10 +31,14 @@
         },
 		"adminUsername": {
             "type": "string",
+			"defaultValue": "",
+			"minLength": 1,
 			"metadata": { "description": "Username to login to the VM, either over SSH for Linux VMs, or over RDP for Windows VMs" }
         },
 		"adminPassword": {
             "type": "securestring",
+			"defaultValue": "",
+			"minLength": 1,
 			"metadata": { "description": "Password to login to the VM." }
         }
     },
