@@ -29,7 +29,10 @@
             "parameters": {
                 "storageAccountName": {
                     "value": "[parameters('storageAccountName')]"
-                }             
+                },
+                "storageSKU": {
+                    "value": "Standard_LRS"
+                }
             }
         }
     }]
